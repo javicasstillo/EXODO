@@ -14,7 +14,7 @@ export default function Sidebar({ page, onNavigate, onLogout, className = '' }) 
     <div className={`sidebar ${className}`}>
       <div className="sidebar-logo">
         <div className="logo-mark">É</div>
-        <div>
+        <div> 
           <h1>ÉXODO</h1>
           <span>Gestión de iPhones</span>
         </div>
