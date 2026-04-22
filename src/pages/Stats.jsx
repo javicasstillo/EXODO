@@ -38,7 +38,6 @@ export default function Stats() {
   const gananciaNeta = gananciaBruta - totalGastos;
   const margenProm = totalIngresos > 0 ? ((gananciaBruta / totalIngresos) * 100).toFixed(1) : 0;
 
-  // Ventas por modelo
   const byModel = {};
   completed.forEach(s => {
     const phone = phones.find(p => p.id === s.phoneId);
@@ -51,7 +50,6 @@ export default function Stats() {
   const modelRanking = Object.entries(byModel).sort((a, b) => b[1].count - a[1].count).slice(0, 6);
   const maxCount = modelRanking[0]?.[1]?.count || 1;
 
-  // Ventas por forma de pago
   const byPayment = {};
   completed.forEach(s => {
     const m = s.paymentMethod || 'Otro';
@@ -60,7 +58,6 @@ export default function Stats() {
   });
   const paymentList = Object.entries(byPayment).sort((a, b) => b[1] - a[1]);
 
-  // Ventas por mes (últimos 6 meses)
   const byMonth = {};
   completed.forEach(s => {
     if (!s.saleDate) return;
@@ -73,7 +70,6 @@ export default function Stats() {
   const monthList = Object.entries(byMonth).sort((a, b) => a[0].localeCompare(b[0])).slice(-6);
   const maxRevMonth = Math.max(...monthList.map(([, v]) => v.revenue), 1);
 
-  // Ticket promedio
   const ticketProm = completed.length > 0 ? totalIngresos / completed.length : 0;
 
   return (
@@ -83,7 +79,6 @@ export default function Stats() {
       </div>
       <div className="page-body fade-up">
 
-        {/* KPIs principales */}
         <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(4,1fr)' }}>
           <div className="stat-card">
             <div className="stat-label">Ingresos totales</div>
@@ -107,8 +102,7 @@ export default function Stats() {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 4 }}>
-          {/* Modelos más vendidos */}
+        <div className="stats-cols" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 4 }}>
           <div className="card">
             <h3 style={{ fontFamily: 'Bebas Neue', fontSize: 18, letterSpacing: 1, marginBottom: 16 }}>Modelos más vendidos</h3>
             {modelRanking.length === 0
@@ -119,7 +113,6 @@ export default function Stats() {
             }
           </div>
 
-          {/* Ventas por mes */}
           <div className="card">
             <h3 style={{ fontFamily: 'Bebas Neue', fontSize: 18, letterSpacing: 1, marginBottom: 16 }}>Ingresos por mes</h3>
             {monthList.length === 0
@@ -130,7 +123,6 @@ export default function Stats() {
             }
           </div>
 
-          {/* Formas de pago */}
           <div className="card">
             <h3 style={{ fontFamily: 'Bebas Neue', fontSize: 18, letterSpacing: 1, marginBottom: 16 }}>Formas de pago</h3>
             {paymentList.length === 0
@@ -151,7 +143,6 @@ export default function Stats() {
             }
           </div>
 
-          {/* Resumen financiero */}
           <div className="card">
             <h3 style={{ fontFamily: 'Bebas Neue', fontSize: 18, letterSpacing: 1, marginBottom: 16 }}>Resumen financiero</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>

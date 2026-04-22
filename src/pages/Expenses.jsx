@@ -107,7 +107,7 @@ export default function Expenses() {
         <button className="btn btn-primary" onClick={() => setModal('new')}><Plus size={15} /> Nuevo gasto</button>
       </div>
       <div className="page-body fade-up">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 260px', gap: 20 }}>
+        <div className="expenses-layout" style={{ display: 'grid', gridTemplateColumns: '1fr 260px', gap: 20 }}>
           <div>
             <div className="toolbar">
               <div className="search-box">

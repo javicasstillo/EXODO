@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { phonesApi, salesApi, expensesApi, buyersApi } from '../api';
-import { Smartphone, ShoppingCart, TrendingUp, DollarSign, AlertTriangle, Clock } from 'lucide-react';
+import { Smartphone, ShoppingCart, TrendingUp, DollarSign, AlertTriangle } from 'lucide-react';
 
 const fmt = (n) => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 0 }).format(n || 0);
 
@@ -30,7 +30,6 @@ export default function Dashboard() {
   const getPhone = (id) => phones.find(p => p.id === id);
   const getBuyer = (id) => buyers.find(b => b.id === id);
 
-  // Equipos sin precio de costo cargado
   const sinCosto = phones.filter(p => p.status === 'disponible' && !p.costPrice);
 
   return (
@@ -78,8 +77,7 @@ export default function Dashboard() {
           </div>
         )}
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-          {/* Últimas ventas */}
+        <div className="dashboard-cols" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
           <div className="card">
             <div style={{ marginBottom: 14 }}>
               <h3 style={{ fontFamily: 'Bebas Neue', fontSize: 18, letterSpacing: 1 }}>Últimas Ventas</h3>
@@ -99,9 +97,7 @@ export default function Dashboard() {
                     </div>
                     <div style={{ textAlign: 'right' }}>
                       <div style={{ fontFamily: 'Bebas Neue', fontSize: 15 }}>{fmt(s.salePrice)}</div>
-                      <div style={{ fontSize: 10, color: ganancia >= 0 ? 'var(--text2)' : 'var(--text3)' }}>
-                        +{fmt(ganancia)} ganancia
-                      </div>
+                      <div style={{ fontSize: 10, color: 'var(--text3)' }}>+{fmt(ganancia)} ganancia</div>
                     </div>
                   </div>
                 );
@@ -109,7 +105,6 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Stock disponible */}
           <div className="card">
             <div style={{ marginBottom: 14 }}>
               <h3 style={{ fontFamily: 'Bebas Neue', fontSize: 18, letterSpacing: 1 }}>Stock Disponible</h3>
