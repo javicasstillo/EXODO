@@ -40,31 +40,31 @@ export default function Dashboard() {
       <div className="page-body fade-up">
 
         <div className="stats-grid">
-          <div className="stat-card">
-            <div className="stat-icon"><Smartphone size={18} /></div>
-            <div className="stat-label">Stock disponible</div>
-            <div className="stat-value">{stock}</div>
-            <div className="stat-sub">{vendidos} vendidos en total</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-icon"><ShoppingCart size={18} /></div>
-            <div className="stat-label">Ventas</div>
-            <div className="stat-value">{sales.length}</div>
-            <div className="stat-sub">{buyers.length} compradores registrados</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-icon"><DollarSign size={18} /></div>
-            <div className="stat-label">Ingresos totales</div>
-            <div className="stat-value" style={{ fontSize: 20 }}>{fmt(totalIngresos)}</div>
-            <div className="stat-sub">Costo: {fmt(totalCostos)}</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-icon"><TrendingUp size={18} /></div>
-            <div className="stat-label">Ganancia neta</div>
-            <div className="stat-value" style={{ fontSize: 20 }}>{fmt(gananciaNeta)}</div>
-            <div className="stat-sub">Gastos descontados: {fmt(totalGastos)}</div>
-          </div>
-        </div>
+  <div className="stat-card">
+    <div className="stat-icon"><Smartphone size={18} /></div>
+    <div className="stat-label">Stock</div>
+    <div className="stat-value">{stock}</div>
+    <div className="stat-sub">{vendidos} vendidos</div>
+  </div>
+  <div className="stat-card">
+    <div className="stat-icon"><ShoppingCart size={18} /></div>
+    <div className="stat-label">Ventas</div>
+    <div className="stat-value">{sales.length}</div>
+    <div className="stat-sub">{buyers.length} compradores</div>
+  </div>
+  <div className="stat-card">
+    <div className="stat-icon"><DollarSign size={18} /></div>
+    <div className="stat-label">Ingresos</div>
+    <div className="stat-value" style={{ fontSize: 18 }}>{fmt(totalIngresos)}</div>
+    <div className="stat-sub">Costo: {fmt(totalCostos)}</div>
+  </div>
+  <div className="stat-card">
+    <div className="stat-icon"><TrendingUp size={18} /></div>
+    <div className="stat-label">Ganancia</div>
+    <div className="stat-value" style={{ fontSize: 18 }}>{fmt(gananciaNeta)}</div>
+    <div className="stat-sub">Neta</div>
+  </div>
+</div>
 
         {sinCosto.length > 0 && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 }}>

@@ -4,7 +4,7 @@
 
 :root {
   --bg:       #ffffff;
-  --bg2:      #f7f7f7;
+  --bg2:      #ffffff;
   --bg3:      #f0f0f0;
   --bg4:      #e8e8e8;
   --border:   #e0e0e0;
@@ -29,7 +29,12 @@ body {
 }
 
 .app-shell { display: flex; height: 100vh; overflow: hidden; }
-.main-content { flex: 1; overflow-y: auto; background: var(--bg2); padding: 0; }
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--bg);
+  padding: 0;
+}
 
 .sidebar {
   width: var(--sidebar);
@@ -57,16 +62,20 @@ body {
   .hamburger { display: flex; }
   .sidebar { position: fixed; left: -260px; top: 0; height: 100%; transition: left 0.25s ease; box-shadow: 4px 0 20px rgba(0,0,0,0.08); }
   .sidebar.open { left: 0; }
-  .sidebar-overlay { display: block; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 99; }
+  .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 99; }
+.sidebar-overlay.open { display: block; }
   .sidebar-overlay.open { display: block; }
   .main-content { padding-top: 0; }
 
   .page-header { padding: 52px 16px 0; flex-wrap: wrap; gap: 10px; }
   .page-body { padding: 16px 16px 40px; }
 
-  .stats-grid { grid-template-columns: 1fr 1fr !important; gap: 10px; }
-  .stat-card { padding: 14px; }
-  .stat-value { font-size: 22px !important; }
+ .stats-grid { grid-template-columns: 1fr 1fr !important; gap: 8px; }
+.stat-card { padding: 12px; }
+.stat-icon { width: 28px; height: 28px; margin-bottom: 8px; }
+.stat-label { font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stat-value { font-size: 20px !important; }
+.stat-sub { font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   .form-grid-2 { grid-template-columns: 1fr; }
   .form-grid-3 { grid-template-columns: 1fr 1fr; }
