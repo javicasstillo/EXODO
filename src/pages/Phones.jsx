@@ -17,7 +17,7 @@ const MODELS = [
 ];
 const STORAGE = ['16GB','32GB','64GB','128GB','256GB','512GB','1TB'];
 const CONDITIONS = ['Nuevo', 'Como nuevo', 'Excelente', 'Muy bueno', 'Bueno', 'Regular'];
-const COLORS = ['Negro', 'Blanco', 'Rojo', 'Azul', 'Verde', 'Amarillo', 'Rosa', 'Morado', 'Natural', 'Titanio', 'Otro'];
+const COLORS = ['Negro', 'Blanco', 'Rojo', 'Azul', 'Celeste', 'Verde', 'Amarillo', 'Rosa', 'Morado', 'Natural', 'Titanio', 'Otro'];
 
 const EMPTY = {
   model: 'iPhone 13', storage: '128GB', color: 'Negro', condition: 'Excelente',
