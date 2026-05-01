@@ -228,9 +228,9 @@ export default function Phones() {
             <div className="phone-grid">
               {filtered.map(p => (
                 <div key={p.id} className="phone-card">
-                  <div className="phone-card-img">
+                 <div className="phone-card-img" style={{ position: 'relative', overflow: 'hidden' }}>
                     {p.photo
-                      ? <img src={p.photo} alt={p.model} />
+                      ? <img src={p.photo} alt={p.model} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                       : <Smartphone size={44} color="var(--text3)" />
                     }
                     <div style={{ position: 'absolute', top: 8, right: 8 }}>
