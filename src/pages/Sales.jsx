@@ -68,10 +68,6 @@ function exportRecibo(sale, phone, buyer) {
     </div>
   </div>
   ${sale.notes ? `<div class="section"><div class="section-title">Observaciones</div><p style="font-size:13px;color:#444;line-height:1.6">${sale.notes}</p></div>` : ''}
-  <div class="footer">
-    <div class="firma">Firma del vendedor — ÉXODO</div>
-    <div class="firma">Firma del comprador — ${buyer?.name || ''}</div>
-  </div>
   <div class="watermark">Generado el ${new Date().toLocaleDateString('es-AR', { day: '2-digit', month: 'long', year: 'numeric' })}</div>
   </body></html>`;
   const win = window.open('', '_blank');
