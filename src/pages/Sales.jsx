@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react';
 import { salesApi, phonesApi, buyersApi } from '../api';
 import { Plus, Search, ShoppingCart, Edit2, Trash2, X, Download, CheckCircle } from 'lucide-react';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const fmt = (n) => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 0 }).format(n || 0);
 const PAYMENT_METHODS = ['Efectivo', 'Transferencia', 'Cuotas con tarjeta', 'Cuotas sin tarjeta', 'Cripto', 'Mixto'];
 const EMPTY = { phoneId: '', buyerId: '', salePrice: '', costPrice: '', currency: 'ARS', saleDate: new Date().toISOString().split('T')[0], paymentMethod: 'Efectivo', installments: '', notes: '', status: 'completada', warrantyDays: '30' };
 
-function exportRecibo(sale, phone, buyer) {
-  const ganancia = Number(sale.salePrice || 0) - Number(sale.costPrice || 0);
-  const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Recibo ÉXODO</title>
+async function exportRecibo(sale, phone, buyer) {
+  const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Arial,sans-serif;font-size:13px;color:#000;padding:40px}
+    body{font-family:Arial,sans-serif;font-size:13px;color:#000;padding:40px;width:700px}
     .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:20px;border-bottom:2px solid #000}
     .logo{font-size:32px;font-weight:900;letter-spacing:4px}
     .logo span{font-size:12px;display:block;font-weight:400;letter-spacing:1px;color:#555;margin-top:2px}
@@ -26,10 +27,7 @@ function exportRecibo(sale, phone, buyer) {
     .item label{font-size:10px;font-weight:600;text-transform:uppercase;color:#999;display:block;margin-bottom:2px}
     .item span{font-size:13px}
     .badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:11px;font-weight:700;background:#000;color:#fff}
-    .footer{margin-top:50px;display:grid;grid-template-columns:1fr 1fr;gap:50px}
-    .firma{border-top:1px solid #ccc;padding-top:8px;text-align:center;font-size:11px;color:#999}
     .watermark{text-align:center;margin-top:30px;font-size:10px;color:#ccc;letter-spacing:2px;text-transform:uppercase}
-    @media print{body{padding:24px}}
   </style></head><body>
   <div class="header">
     <div><div class="logo">ÉXODO<span>Gestión de iPhones</span></div></div>
@@ -70,10 +68,41 @@ function exportRecibo(sale, phone, buyer) {
   ${sale.notes ? `<div class="section"><div class="section-title">Observaciones</div><p style="font-size:13px;color:#444;line-height:1.6">${sale.notes}</p></div>` : ''}
   <div class="watermark">Generado el ${new Date().toLocaleDateString('es-AR', { day: '2-digit', month: 'long', year: 'numeric' })}</div>
   </body></html>`;
-  const win = window.open('', '_blank');
-  win.document.write(html);
-  win.document.close();
-  setTimeout(() => win.print(), 500);
+
+  // Crear iframe oculto para renderizar el HTML
+  const iframe = document.createElement('iframe');
+  iframe.style.cssText = 'position:fixed;left:-9999px;top:0;width:780px;height:auto;border:none;';
+  document.body.appendChild(iframe);
+  iframe.contentDocument.open();
+  iframe.contentDocument.write(html);
+  iframe.contentDocument.close();
+
+  await new Promise(r => setTimeout(r, 600));
+
+  const canvas = await html2canvas(iframe.contentDocument.body, {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: '#ffffff',
+    width: 780,
+  });
+
+  document.body.removeChild(iframe);
+
+  const imgData = canvas.toDataURL('image/png');
+  const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
+  const imgRatio = canvas.height / canvas.width;
+  const imgHeight = pageWidth * imgRatio;
+
+  if (imgHeight <= pageHeight) {
+    pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, imgHeight);
+  } else {
+    // Si el contenido es más largo que una página, lo escala para que entre
+    pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight);
+  }
+
+  pdf.save(`recibo-${(phone?.model || 'equipo').replace(/\s+/g, '-')}-${sale.saleDate}.pdf`);
 }
 
 function Modal({ sale, phones, buyers, onClose, onSave, saving }) {
@@ -320,7 +349,8 @@ export default function Sales() {
                         <td><span className={`badge ${statusBadge[s.status] || 'badge-gray'}`}>{s.status}</span></td>
                         <td>
                           <div style={{ display: 'flex', gap: 6 }}>
-                            <button className="btn btn-sm btn-secondary" title="Descargar recibo" onClick={() => exportRecibo(s, getPhone(s.phoneId), getBuyer(s.buyerId))}>
+                            <button className="btn btn-sm btn-secondary" title="Descargar recibo"
+                              onClick={() => exportRecibo(s, getPhone(s.phoneId), getBuyer(s.buyerId))}>
                               <Download size={12} />
                             </button>
                             <button className="btn btn-sm btn-secondary" onClick={() => setModal(s)}><Edit2 size={12} /></button>
